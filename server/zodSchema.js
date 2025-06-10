@@ -26,12 +26,6 @@ export const categorySchema = z.object({
   department_id: z.number().int(),
 });
   
-export const locationSchema = z.object({
-  name: z.string().min(3),
-  area: z.string().min(2),
-  city_id: z.number().int(),
-  landmark: z.string().optional(),
-});
 
 export const workerSchema = z.object({
   name: z.string().min(3).optional(),
@@ -61,28 +55,11 @@ export const complaintSchema = z.object({
   created_at: z.string().optional(),
 });
 
-export const assignmentSchema = z.object({
-  complaint_id: z.number().int(),
-  worker_id: z.number().int(),
-  assigned_at: z.string().optional(),
-});
-
 export const resolutionSchema = z.object({
   complaint_id: z.number().int(),
  category_id: z.number().int(),
   resolved_at: z.string().optional(),
 });
 
-export const feedbackSchema = z.object({
-  complaint_id: z.number().int(),
-  citizen_id: z.number().int(),
-  worker_id: z.number().int(),
-  department_id: z.number().int(),
-  service_rating: z.number().min(1).max(5),
-  response_time_rating: z.number().min(1).max(5),
-  quality_rating: z.number().min(1).max(5),
-  overall_rating: z.number().min(1).max(5),
-  comments: z.string().optional(),
-  created_at: z.string().optional(),
-});
+
 

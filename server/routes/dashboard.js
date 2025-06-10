@@ -30,9 +30,10 @@ router.get("/complaints-by-city", async (req, res) => {
       SELECT 
         c.name as city_name,
         COUNT(comp.id) as complaint_count,
-        (select COUNT(*) from resolution_logs) as resolved_count
+      COUNT(rl.id) AS resolved_count
       FROM cities c
       LEFT JOIN complaints comp ON c.id = comp.city_id
+      LEFT JOIN resolution_logs rl ON rl.complaint_id = comp.id
       GROUP BY c.id, c.name
       ORDER BY complaint_count DESC
     `;

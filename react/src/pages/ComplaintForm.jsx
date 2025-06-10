@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import {
     MapPin,
-  
     AlertCircle,
     CheckCircle,
     Send,
     User,
     FileText,
-    Upload,
-    X,
     Clock,
     Shield,
     ArrowRight
@@ -41,6 +38,7 @@ const ComplaintForm = () => {
     const [filteredLocations, setFilteredLocations] = useState([]);
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [errors, setErrors] = useState({});
+    const [complaintResult, setComplaintResult] = useState(null);
 
     
     const { data: cities, loading: citiesLoading, error: citiesError } = useApi(citiesAPI.getAll);
@@ -135,7 +133,7 @@ const ComplaintForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setComplaintResult(null)
         if (!validateStep(3)) {
             return;
         }
@@ -160,7 +158,8 @@ const ComplaintForm = () => {
                 priority: parseInt(formData.priority),
                 };
 
-         result= await submit(complaintsAPI.create, complaintData);
+         const result= await submit(complaintsAPI.create, complaintData);
+            setComplaintResult(result);
           setCurrentStep(4);
 
         } catch (error) {
@@ -570,7 +569,7 @@ const ComplaintForm = () => {
                         Complaint Submitted Successfully!
                     </h2>
                     <p className="text-lg text-gray-600 mb-2">
-                        Your complaint has been registered and assigned ID: <strong>${result.id}</strong>
+                        Your complaint has been registered and assigned ID: <strong>{complaintResult?.id}</strong>
                     </p>
                   
 
