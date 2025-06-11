@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import { complaintsAPI, citiesAPI, resolutionApi } from "../services/api";
-import { useApi, usePaginatedApi } from "../hooks/useApi";
+import { useApi, usePaginatedApi,useApiSubmit } from "../hooks/useApi";
 import LoadingSpinner from "./Component/LoadingSpinner";
 
 const ComplaintsList = () => {
@@ -39,6 +39,7 @@ const ComplaintsList = () => {
     city_id: "",
   });
   const { data: citiesData } = useApi(citiesAPI.getAll);
+  const {submit }= useApiSubmit()
 
   useEffect(() => {
     const newParams = {
@@ -56,7 +57,9 @@ const ComplaintsList = () => {
 
   const handleMarkResolved = async (category_id, complaint_id) => {
     try {
-      useApi(resolutionApi.create({ complaint_id, category_id }));
+      await submit(resolutionApi.create,({category_id,complaint_id}))
+     
+      refetch()
       setShowModal(false);
     } catch (error) {
       console.error("Failed to mark complaint as resolved:", error);
@@ -153,26 +156,26 @@ const ComplaintsList = () => {
 
   const renderGridView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {complaints.map((complaint) => (
+      {!loading && complaints?.map((complaint) => (
         <div
-          key={complaint.id}
+          key={complaint?.id}
           className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <span
               className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(
-                complaint.status
+                complaint?.status
               )}`}>
-              {getStatusIcon(complaint.status)}
+              {getStatusIcon(complaint?.status)}
               <span className="capitalize">
-                {complaint.status.replace("_", " ")}
+                {complaint?.status?.replace("_", " ")}
               </span>
             </span>
 
             <span
               className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(
-                complaint.priority
+                complaint?.priority
               )}`}>
-              <span>{getPriorityLabel(complaint.priority)}</span>
+              <span>{getPriorityLabel(complaint?.priority)}</span>
             </span>
           </div>
 
@@ -297,8 +300,8 @@ const ComplaintsList = () => {
                 onChange={(e) => setCityFilter(e.target.value)}
                 className="w-full px-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                 <option value="">All Cities</option>
-                {loading &&
-                  citiesData.map((c) => (
+                {!loading &&
+                  citiesData?.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.name}
                     </option>
@@ -310,7 +313,7 @@ const ComplaintsList = () => {
           {/* View Mode Toggle */}
           <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
             <p className="text-gray-600">
-              Showing {complaints.length} of {pagination.totalCount || 0}{" "}
+              Showing {complaints?.length} of {pagination?.totalCount || 0}{" "}
               complaints
             </p>
           </div>

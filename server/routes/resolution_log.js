@@ -37,7 +37,8 @@ router.post('/',async(req,res) => {
              ];
            
              const query = await pool.query(insertQuery, values);
-      
+
+             await pool.query(`update complaints set status='resolved' where id = ${complaint_id}`)
              res.status(201).json({
                message: "resolution_log created successfully",
                resolution: query.rows[0],

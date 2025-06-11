@@ -180,7 +180,9 @@ const ComplaintForm = () => {
       };
 
       const result = await submit(complaintsAPI.create, complaintData);
-      setComplaintResult(result);
+      console.log(result.complaint.id);
+      
+      setComplaintResult(result.complaint);
       setCurrentStep(4);
     } catch (error) {
       console.error("Error submitting complaint:", error);
@@ -608,6 +610,7 @@ const ComplaintForm = () => {
 
   const renderStep4 = () => (
     <div className="text-center space-y-6">
+      {submitting && LoadingSpinner}
       {submitSuccess ? (
         <>
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
