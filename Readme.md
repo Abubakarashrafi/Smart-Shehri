@@ -86,9 +86,18 @@ npm run dev
 4. **Configure environment variables**
 Set up the .env files in both client and server with appropriate values like:
 
+for server
+/server/.env
 ```bash
-DATABASE_URL=postgres://username:password@localhost:port/db_name
+DB_URL=postgres://username:password@localhost:port/db_name
+PORT = 3000
+CLIENT_URL = 'http://localhost:5173'
 ```
+for client
+/client/.env.local
+```bash
+VITE_API_BASE_URL = 'http://localhost:3000'
 
+```
 # 📄 License
 MIT License © 2025 Smart Shehri Team
